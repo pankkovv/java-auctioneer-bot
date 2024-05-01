@@ -1,11 +1,11 @@
-package ru.pankkovv.auctioneerBot.telegram.service.open;
+package ru.pankkovv.auctioneerBot.service.telegram.open;
 
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import ru.pankkovv.auctioneerBot.telegram.service.Command;
-import ru.pankkovv.auctioneerBot.telegram.utils.Utils;
+import ru.pankkovv.auctioneerBot.service.telegram.Command;
+import ru.pankkovv.auctioneerBot.utils.Utils;
 
 /**
  * Команда "Старт"

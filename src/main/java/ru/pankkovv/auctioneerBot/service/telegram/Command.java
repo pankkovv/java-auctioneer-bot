@@ -1,4 +1,4 @@
-package ru.pankkovv.auctioneerBot.telegram.service;
+package ru.pankkovv.auctioneerBot.service.telegram;
 
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;

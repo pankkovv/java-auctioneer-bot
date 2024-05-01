@@ -1,11 +1,11 @@
-package ru.pankkovv.auctioneerBot.telegram.service.open;
+package ru.pankkovv.auctioneerBot.service.telegram.open;
 
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import ru.pankkovv.auctioneerBot.telegram.service.Command;
-import ru.pankkovv.auctioneerBot.telegram.utils.Utils;
+import ru.pankkovv.auctioneerBot.service.telegram.Command;
+import ru.pankkovv.auctioneerBot.utils.Utils;
 
 /**
  * Команда "Помощь"
@@ -25,9 +25,9 @@ public class HelpCommand extends Command {
 
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                         "Спешу напомнить, что у меня есть следующие функции:\n" +
-                                "/up\n" +
-                                "/cancel\n" +
-                                "/view\n\n" +
+                                "/bet - поднять ставку\n" +
+                                "/cancel - отменить ставку\n" +
+                                "/view - просмотр актуальной информации торгуемого лота\n\n" +
                                 "Желаю удачи\uD83D\uDE42");
 
 

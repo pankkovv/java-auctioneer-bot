@@ -1,4 +1,4 @@
-package ru.pankkovv.auctioneerBot.telegram.model;
+package ru.pankkovv.auctioneerBot.model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -6,12 +6,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.pankkovv.auctioneerBot.telegram.service.admin.RegistrationCommand;
-import ru.pankkovv.auctioneerBot.telegram.service.admin.SettingsCommand;
-import ru.pankkovv.auctioneerBot.telegram.service.open.HelpCommand;
-import ru.pankkovv.auctioneerBot.telegram.service.open.OtherCommand;
-import ru.pankkovv.auctioneerBot.telegram.service.open.StartCommand;
-import ru.pankkovv.auctioneerBot.telegram.utils.Utils;
+import ru.pankkovv.auctioneerBot.service.telegram.admin.CreateLotCommand;
+import ru.pankkovv.auctioneerBot.service.telegram.admin.RegistrationAdminCommand;
+import ru.pankkovv.auctioneerBot.service.telegram.open.HelpCommand;
+import ru.pankkovv.auctioneerBot.service.telegram.open.StartCommand;
+import ru.pankkovv.auctioneerBot.utils.Utils;
 
 /**
  * Собственно, бот
@@ -22,7 +21,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
 
-    private final OtherCommand otherCommand;
+    private CreateLotCommand createLotCommand;
 
     /**
      * Настройки файла для разных пользователей. Ключ - уникальный id чата
@@ -35,20 +34,32 @@ public final class Bot extends TelegramLongPollingCommandBot {
         this.BOT_TOKEN = botToken;
         log.debug("Имя и токен присвоены");
 
-        this.otherCommand = new OtherCommand();
-        log.debug("Класс обработки сообщения, не являющегося командой, создан");
-
         register(new StartCommand("start", "Старт"));
         log.debug("Команда start создана");
 
         register(new HelpCommand("help", "Помощь"));
         log.debug("Команда help создана");
 
-        register(new SettingsCommand("settings", "Мои настройки"));
-        log.debug("Команда settings создана");
+        register(new RegistrationAdminCommand("regadminkiselbot", "Регистрация администратора"));
+        log.debug("Команда registration создана");
 
-        register(new RegistrationCommand("addd", "регистрация админов"));
-        log.debug("Команда addd создана");
+        register(new RegistrationAdminCommand("create", "Добавление нового лота"));
+        log.debug("Команда create создана");
+
+        register(new RegistrationAdminCommand("viewTable", "Просмотр таблицы торгов"));
+        log.debug("Команда view создана");
+
+        register(new RegistrationAdminCommand("setting", "Настройки"));
+        log.debug("Команда setting создана");
+
+        register(new RegistrationAdminCommand("bet", "Поднять ставку"));
+        log.debug("Команда bet создана");
+
+        register(new RegistrationAdminCommand("cancel", "Отменить ставку"));
+        log.debug("Команда cancel создана");
+
+        register(new RegistrationAdminCommand("viewLot", "Просмотр актуального лота"));
+        log.debug("Команда view создана");
 
         log.info("Бот создан!");
     }
@@ -72,7 +83,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
         Long chatId = msg.getChatId();
         String userName = Utils.getUserName(msg);
 
-        String answer = otherCommand.nonCommandExecute(chatId, userName, msg.getText());
+        String answer = createLotCommand.nonCommandExecute(chatId, userName, msg.getText());
         setAnswer(chatId, userName, answer);
     }
 
