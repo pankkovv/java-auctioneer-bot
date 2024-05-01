@@ -1,4 +1,4 @@
-package ru.pankkovv.auctioneerBot.telegram.exception;
+package ru.pankkovv.auctioneerBot.exception;
 
 /**
  * Исключение, пробрасываемое в случае получения невалидных настроек выгружаемого файла
