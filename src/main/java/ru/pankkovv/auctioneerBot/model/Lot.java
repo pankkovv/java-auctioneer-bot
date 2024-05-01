@@ -1,4 +1,4 @@
-package ru.pankkovv.auctioneerBot.auctioneer.model;
+package ru.pankkovv.auctioneerBot.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,6 @@ public class Lot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String description;
     private Float minPrice;
-    private String image;
+    private Float step;
 }
