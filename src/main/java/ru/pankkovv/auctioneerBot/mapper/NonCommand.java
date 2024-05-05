@@ -5,6 +5,9 @@ import ru.pankkovv.auctioneerBot.exception.BetException;
 import ru.pankkovv.auctioneerBot.model.Auction;
 import ru.pankkovv.auctioneerBot.model.Lot;
 
+import java.io.FileWriter;
+import java.io.Writer;
+
 import static ru.pankkovv.auctioneerBot.model.Auction.bidding;
 import static ru.pankkovv.auctioneerBot.model.Auction.lot;
 
@@ -24,13 +27,14 @@ public class NonCommand {
 
         String[] parameters = text.split(",");
 
-        try {
+        try (FileWriter fileWriter = new FileWriter("bidding.txt", true)) {
             switch (parameters.length) {
                 case 1:
                     log.debug(String.format("Пользователь %s. Пробуем обновить цену лота из сообщения \"%s\"", userName, text));
 
                     Float bet = createBet(parameters);
                     bidding.put(userName, bet);
+                    fileWriter.append(String.format("%s %s\n", userName, bet));
                     answer = String.format("Предложение по лоту обновлено. Вы всегда можете их посмотреть с помощью /view_bet %s", bidding.get(userName));
                     break;
 
