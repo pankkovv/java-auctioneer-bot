@@ -1,16 +1,24 @@
 package ru.pankkovv.auctioneerBot.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.pankkovv.auctioneerBot.service.telegram.admin.CreateLotCommand;
-import ru.pankkovv.auctioneerBot.service.telegram.admin.RegistrationAdminCommand;
-import ru.pankkovv.auctioneerBot.service.telegram.open.HelpCommand;
-import ru.pankkovv.auctioneerBot.service.telegram.open.StartCommand;
+import ru.pankkovv.auctioneerBot.mapper.NonCommand;
+import ru.pankkovv.auctioneerBot.service.admin.CreateLotCommand;
+import ru.pankkovv.auctioneerBot.service.admin.RegistrationAdminCommand;
+import ru.pankkovv.auctioneerBot.service.admin.ViewTableCommand;
+import ru.pankkovv.auctioneerBot.service.open.*;
 import ru.pankkovv.auctioneerBot.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Собственно, бот
@@ -21,7 +29,10 @@ public final class Bot extends TelegramLongPollingCommandBot {
     private final String BOT_NAME;
     private final String BOT_TOKEN;
 
-    private CreateLotCommand createLotCommand;
+    private final NonCommand nonCommand;
+    @Getter
+    @Setter
+    private Auction auction;
 
     /**
      * Настройки файла для разных пользователей. Ключ - уникальный id чата
@@ -34,6 +45,8 @@ public final class Bot extends TelegramLongPollingCommandBot {
         this.BOT_TOKEN = botToken;
         log.debug("Имя и токен присвоены");
 
+        this.nonCommand = new NonCommand();
+
         register(new StartCommand("start", "Старт"));
         log.debug("Команда start создана");
 
@@ -43,23 +56,23 @@ public final class Bot extends TelegramLongPollingCommandBot {
         register(new RegistrationAdminCommand("regadminkiselbot", "Регистрация администратора"));
         log.debug("Команда registration создана");
 
-        register(new RegistrationAdminCommand("create", "Добавление нового лота"));
+        register(new CreateLotCommand("create", "Добавление нового лота"));
         log.debug("Команда create создана");
 
-        register(new RegistrationAdminCommand("viewTable", "Просмотр таблицы торгов"));
-        log.debug("Команда view создана");
+        register(new ViewTableCommand("view_table", "Просмотр таблицы торгов"));
+        log.debug("Команда viewTable создана");
 
-        register(new RegistrationAdminCommand("setting", "Настройки"));
-        log.debug("Команда setting создана");
-
-        register(new RegistrationAdminCommand("bet", "Поднять ставку"));
+        register(new BetCommand("bet", "Поднять ставку"));
         log.debug("Команда bet создана");
 
-        register(new RegistrationAdminCommand("cancel", "Отменить ставку"));
+        register(new CancelCommand("cancel", "Отменить ставку"));
         log.debug("Команда cancel создана");
 
-        register(new RegistrationAdminCommand("viewLot", "Просмотр актуального лота"));
-        log.debug("Команда view создана");
+        register(new ViewLotCommand("view_lot", "Просмотр выставленного лота"));
+        log.debug("Команда viewLot создана");
+
+        register(new ViewBetCommand("view_bet", "Просмотр актуального предложения по лоту"));
+        log.debug("Команда viewBet создана");
 
         log.info("Бот создан!");
     }
@@ -83,7 +96,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
         Long chatId = msg.getChatId();
         String userName = Utils.getUserName(msg);
 
-        String answer = createLotCommand.nonCommandExecute(chatId, userName, msg.getText());
+        String answer = nonCommand.nonCommandExecute(chatId, userName, msg.getText());
         setAnswer(chatId, userName, answer);
     }
 
@@ -106,4 +119,5 @@ public final class Bot extends TelegramLongPollingCommandBot {
             e.printStackTrace();
         }
     }
+
 }

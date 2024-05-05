@@ -1,19 +1,18 @@
-package ru.pankkovv.auctioneerBot.service.telegram.open;
+package ru.pankkovv.auctioneerBot.service.open;
 
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import ru.pankkovv.auctioneerBot.service.telegram.Command;
+import ru.pankkovv.auctioneerBot.service.Command;
 import ru.pankkovv.auctioneerBot.utils.Utils;
 
-/**
- * Команда "Помощь"
- */
-@Slf4j
-public class HelpCommand extends Command {
+import static ru.pankkovv.auctioneerBot.model.Auction.lot;
 
-    public HelpCommand(String identifier, String description) {
+@Slf4j
+public class ViewLotCommand extends Command {
+
+    public ViewLotCommand(String identifier, String description) {
         super(identifier, description);
     }
 
@@ -24,11 +23,7 @@ public class HelpCommand extends Command {
         log.debug(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
 
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                        "Спешу напомнить, что у меня есть следующие функции:\n" +
-                                "/bet - поднять ставку\n" +
-                                "/cancel - отменить ставку\n" +
-                                "/view - просмотр актуальной информации торгуемого лота\n\n" +
-                                "Желаю удачи\uD83D\uDE42");
+                String.format("Актуальная информация по лоту: %s", lot));
 
 
         log.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));

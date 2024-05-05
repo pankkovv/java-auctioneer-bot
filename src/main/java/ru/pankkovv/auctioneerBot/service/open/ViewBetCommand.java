@@ -1,18 +1,22 @@
-package ru.pankkovv.auctioneerBot.service.telegram.open;
+package ru.pankkovv.auctioneerBot.service.open;
 
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import ru.pankkovv.auctioneerBot.service.auctioneer.lot.LotService;
-import ru.pankkovv.auctioneerBot.service.telegram.Command;
+import ru.pankkovv.auctioneerBot.service.Command;
 import ru.pankkovv.auctioneerBot.utils.Utils;
 
-@Slf4j
-public class ViewLotCommand extends Command {
-    private LotService lotService;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
-    protected ViewLotCommand(String identifier, String description) {
+import static ru.pankkovv.auctioneerBot.model.Auction.bidding;
+import static ru.pankkovv.auctioneerBot.model.Auction.lot;
+
+@Slf4j
+public class ViewBetCommand extends Command {
+
+    public ViewBetCommand(String identifier, String description) {
         super(identifier, description);
     }
 
@@ -23,8 +27,7 @@ public class ViewLotCommand extends Command {
         log.debug(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
 
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                String.format("Актуальная информация по лоту: %s", lotService.getLot(0).toString()));
-
+                String.format("Актуальная ставка: %s ", bidding.values().stream().max(Comparator.comparing(Float::valueOf)).orElse(null)));
 
         log.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));
     }
