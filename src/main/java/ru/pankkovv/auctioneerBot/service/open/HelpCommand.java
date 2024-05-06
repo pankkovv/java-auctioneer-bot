@@ -8,7 +8,7 @@ import ru.pankkovv.auctioneerBot.service.Command;
 import ru.pankkovv.auctioneerBot.utils.Utils;
 
 /**
- * Команда "Помощь"
+ * Команда, предоставляющая информацию об основных функциях бота
  */
 @Slf4j
 public class HelpCommand extends Command {
@@ -25,7 +25,6 @@ public class HelpCommand extends Command {
 
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                 "Спешу напомнить, что у меня есть следующие функции:\n" +
-                        "/view_bet - просмотр последней ставки \n" +
                         "/bet - поднять ставку\n" +
                         "/cancel - отменить ставку\n" +
                         "/view_lot - просмотр актуальной информации торгуемого лота\n\n" +

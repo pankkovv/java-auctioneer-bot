@@ -9,6 +9,9 @@ import ru.pankkovv.auctioneerBot.utils.Utils;
 
 import static ru.pankkovv.auctioneerBot.model.Auction.admin;
 
+/**
+ * Команда, предоставляющая информацию для регистрации администратора
+ */
 @Slf4j
 public class RegistrationAdminCommand extends Command {
 
@@ -23,13 +26,12 @@ public class RegistrationAdminCommand extends Command {
 
         log.debug(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
 
-        admin.add("eee_kisel");
-        admin.add("pankkovv");
         admin.add(userName);
 
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                String.format("Регистрация прошла успешно (ваш профиль - %s).\n" +
-                        "Теперь вам доступны права администратора,", userName));
+                String.format("Регистрация прошла успешно, рад знакомству, %s \uD83E\uDD1D \n" +
+                        "Теперь вам доступны права администратора." +
+                        "\n\n чтобы увидеть команды, нажмите /help", userName));
 
         log.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));
     }

@@ -7,8 +7,9 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import ru.pankkovv.auctioneerBot.service.Command;
 import ru.pankkovv.auctioneerBot.utils.Utils;
 
+
 /**
- * Команда "Старт"
+ * Команда стартовой информации бота
  */
 @Slf4j
 public class StartCommand extends Command {
@@ -27,7 +28,7 @@ public class StartCommand extends Command {
                 "Давайте начнём \n\n" +
                         "Я бот-аукционер, рад знакомству! \n" +
                         "Моей задачей является проведение различных аукционов.\n\n" +
-                        "Если Вам нужна помощь, нажмите /help");
+                        "Если вам нужна помощь, нажмите /help");
 
         log.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));
     }

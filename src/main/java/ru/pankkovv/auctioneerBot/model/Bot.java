@@ -15,13 +15,8 @@ import ru.pankkovv.auctioneerBot.service.admin.ViewTableCommand;
 import ru.pankkovv.auctioneerBot.service.open.*;
 import ru.pankkovv.auctioneerBot.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
- * Собственно, бот
+ * Бот
  */
 @Slf4j
 public final class Bot extends TelegramLongPollingCommandBot {
@@ -70,9 +65,6 @@ public final class Bot extends TelegramLongPollingCommandBot {
 
         register(new ViewLotCommand("view_lot", "Просмотр выставленного лота"));
         log.debug("Команда viewLot создана");
-
-        register(new ViewBetCommand("view_bet", "Просмотр актуального предложения по лоту"));
-        log.debug("Команда viewBet создана");
 
         log.info("Бот создан!");
     }

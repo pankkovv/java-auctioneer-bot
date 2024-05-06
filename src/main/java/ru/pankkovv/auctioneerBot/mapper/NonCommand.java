@@ -6,10 +6,10 @@ import ru.pankkovv.auctioneerBot.model.Auction;
 import ru.pankkovv.auctioneerBot.model.Lot;
 
 import java.io.FileWriter;
-import java.io.Writer;
+import java.time.LocalDateTime;
 
-import static ru.pankkovv.auctioneerBot.model.Auction.bidding;
-import static ru.pankkovv.auctioneerBot.model.Auction.lot;
+import static ru.pankkovv.auctioneerBot.model.Auction.*;
+import static ru.pankkovv.auctioneerBot.utils.Utils.containsAdmin;
 
 /**
  * Обработка сообщения, не являющегося командой (т.е. обычного текста не начинающегося с "/")
@@ -17,8 +17,7 @@ import static ru.pankkovv.auctioneerBot.model.Auction.lot;
 @Slf4j
 public class NonCommand {
     public String nonCommandExecute(Long chatId, String userName, String text) {
-        log.debug(String.format("Пользователь %s. Начата обработка сообщения \"%s\", не являющегося командой",
-                userName, text));
+        log.debug(String.format("Пользователь %s. Начата обработка сообщения \"%s\", не являющегося командой", userName, text));
 
         String answer;
         text = text.replaceAll("-", "")//избавляемся от отрицательных чисел (умники найдутся)
@@ -27,40 +26,56 @@ public class NonCommand {
 
         String[] parameters = text.split(",");
 
-        try (FileWriter fileWriter = new FileWriter("bidding.txt", true)) {
+        try (FileWriter fileWriter = new FileWriter("bidding.csv", true)) {
             switch (parameters.length) {
                 case 1:
-                    log.debug(String.format("Пользователь %s. Пробуем обновить цену лота из сообщения \"%s\"", userName, text));
+                    if (containsAdmin(userName)) {
+                        log.debug(String.format("Пользователь %s. Пробуем обновить цену лота из сообщения \"%s\"", userName, text));
 
-                    Float bet = createBet(parameters);
-                    bidding.put(userName, bet);
-                    fileWriter.append(String.format("%s %s\n", userName, bet));
-                    answer = String.format("Предложение по лоту обновлено. Вы всегда можете их посмотреть с помощью /view_bet %s", bidding.get(userName));
+                        if (flag) {
+                            fileWriter.append("time;username;bet\n");
+                            flag = false;
+                        }
+
+                        Float bet = createBet(parameters);
+                        bidding.put(userName, bet);
+                        lot.setCurrentPrice(bet);
+                        fileWriter.append(String.format("%s;%s;%s\n", LocalDateTime.now(), userName, bet));
+
+                        answer = String.format("Ваша ставка принята: %s.\n\n" +
+                                "Посмотреть актуальную информацию по лоту с помощью /view_lot", lot.getCurrentPrice());
+                    } else {
+                        answer = "Для того чтобы добавить лот в аукцион необходимы права администратора.";
+                    }
                     break;
 
                 case 3:
-                    log.debug(String.format("Пользователь %s. Пробуем создать объект из сообщения \"%s\"", userName, text));
+                    if (lot != null) {
+                        log.debug(String.format("Пользователь %s. Пробуем создать объект из сообщения \"%s\"", userName, text));
 
-                    Lot lot = createLot(parameters);
-                    Auction.lot = lot;
-                    answer = String.format("Лот создан: %s.\n" +
-                            "Вы всегда можете посмотреть его с помощью /view_lot", lot);
+                        Lot lot = createLot(parameters);
+                        Auction.lot = lot;
+                        answer = String.format("Лот создан: %s.\n\n" +
+                                "Посмотреть актуальную информацию по лоту с помощью /view_lot", lot);
+                    } else {
+                        answer = "Торги еще не начались. Пожалуйста, дождитесь регистрации лота.";
+                    }
                     break;
 
                 default:
-                    throw new IllegalArgumentException(String.format("Не удалось разбить сообщение \"%s\" на нужное количество составляющих",
-                            text));
+                    answer = "Простите, я не понимаю Вас. Похоже, что Вы ввели сообщение, не соответствующее формату.\n\n" +
+                            "Возможно, Вам поможет /help";
             }
 
 
         } catch (BetException e) {
             log.debug(String.format("Пользователь %s. Не удалось создать объект из сообщения \"%s\". %s", userName, text, e.getMessage()));
 
-            answer = e.getMessage() + "❗Изменения не были применены.";
+            answer = "Изменения не были применены \uD83D\uDE14 \n\n" + e.getMessage();
         } catch (Exception e) {
             log.debug(String.format("Пользователь %s. Не удалось создать объект из сообщения \"%s\". %s. %s", userName, text, e.getClass().getSimpleName(), e.getMessage()));
 
-            answer = "Простите, я не понимаю Вас. Похоже, что Вы ввели сообщение, не соответствующее формату.\n" +
+            answer = "Простите, я не понимаю Вас. Похоже, что Вы ввели сообщение, не соответствующее формату.\n\n" +
                     "Возможно, Вам поможет /help";
         }
 
@@ -69,14 +84,20 @@ public class NonCommand {
         return answer;
     }
 
+    /**
+     * Функция создания нового лота из переданного сообщения
+     */
     private Lot createLot(String[] parameters) {
         String name = parameters[0];
         Float startPrice = Float.parseFloat(parameters[1]);
         Float step = Float.parseFloat(parameters[2]);
 
-        return Lot.builder().name(name).startPrice(startPrice).step(step).build();
+        return Lot.builder().name(name).startPrice(startPrice).currentPrice(startPrice).step(step).build();
     }
 
+    /**
+     * Функция обработки предложенной ставки
+     */
     private Float createBet(String[] parameters) {
         Float bet = Float.parseFloat(parameters[0]);
         Float maxPrice = 0.0F;
@@ -87,11 +108,15 @@ public class NonCommand {
             }
         }
 
-        if (bet <= lot.getStartPrice() ||
+        if (bet <= lot.getCurrentPrice() ||
                 bet.equals(maxPrice) ||
                 (bet - maxPrice) < lot.getStep() ||
                 (bet - maxPrice) % lot.getStep() != 0) {
-            throw new BetException();
+            throw new BetException("Напомню, если вы хотите предложить свою цену за лот, необходимо выполнить следующие условия:\n" +
+                    "1. Ваша цена не может быть меньше актуальной стоимости лота \n" +
+                    "2. Увеличение цены лота не может быть меньше установленного шага торгов \n" +
+                    "3. Увеличение цены лота должно быть кратно установленному шагу торгов\n\n" +
+                    "Попробуйте еще раз \uD83D\uDE0A");
         }
 
         return bet;

@@ -4,10 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import ru.pankkovv.auctioneerBot.exception.BetException;
 import ru.pankkovv.auctioneerBot.service.Command;
 import ru.pankkovv.auctioneerBot.utils.Utils;
 
+/**
+ * Команда, предоставляющая информацию для создания ставки
+ */
 @Slf4j
 public class BetCommand extends Command {
 
@@ -21,15 +23,11 @@ public class BetCommand extends Command {
 
         log.debug(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
 
-        try {
-            sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                    "❗Чтобы сделать новую ставку напишите мне цену, которую вы готовы предложить за лот. \n" +
-                            "Напоминаю, что предложенная цена не может быть меньше актуальной стоимости лота \n" +
-                            "или меньше и не кратно установленному шагу торгов.");
-        } catch (BetException e) {
-            sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                    "Произошла ошибка. Попробуйте еще раз.");
-        }
+        sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
+                "❗Чтобы сделать новую ставку напишите мне цену, которую вы готовы предложить за лот. \n" +
+                        "Напоминаю, что предложенная цена не может быть меньше актуальной стоимости лота \n" +
+                        "или меньше и не кратно установленному шагу торгов.❗" +
+                        "\n\n чтобы увидеть команды, нажмите /help");
 
         log.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));
     }

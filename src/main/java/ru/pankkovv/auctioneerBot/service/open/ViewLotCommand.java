@@ -9,6 +9,10 @@ import ru.pankkovv.auctioneerBot.utils.Utils;
 
 import static ru.pankkovv.auctioneerBot.model.Auction.lot;
 
+
+/**
+ * Команда, предоставляющая актуальную информацию о лоте
+ */
 @Slf4j
 public class ViewLotCommand extends Command {
 
@@ -23,7 +27,8 @@ public class ViewLotCommand extends Command {
         log.debug(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
 
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                String.format("Актуальная информация по лоту: %s", lot));
+                String.format("Актуальная информация по лоту: %s" +
+                        "\n\n чтобы увидеть команды, нажмите /help", lot));
 
 
         log.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));

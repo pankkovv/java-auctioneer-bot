@@ -3,6 +3,8 @@ package ru.pankkovv.auctioneerBot.utils;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import static ru.pankkovv.auctioneerBot.model.Auction.admin;
+
 public class Utils {
 
     /**
@@ -15,12 +17,21 @@ public class Utils {
     }
 
     /**
-     * Формирование имени пользователя. Если заполнен никнейм, используем его. Если нет - используем фамилию и имя
+     * Формирование имени пользователя. Если заполнен никнейм, используем его.
+     * Если нет - используем фамилию и имя
      *
      * @param user пользователь
      */
     public static String getUserName(User user) {
         return (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
+    }
+
+
+    /**
+     * Авторизация пользователей
+     */
+    public static boolean containsAdmin(String username) {
+        return admin.contains(username);
     }
 }

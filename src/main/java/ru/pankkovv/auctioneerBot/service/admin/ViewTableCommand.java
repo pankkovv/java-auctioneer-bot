@@ -4,14 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import ru.pankkovv.auctioneerBot.exception.AdminNotFoundException;
-import ru.pankkovv.auctioneerBot.model.Auction;
 import ru.pankkovv.auctioneerBot.service.Command;
 import ru.pankkovv.auctioneerBot.utils.Utils;
 
-import static ru.pankkovv.auctioneerBot.model.Auction.admin;
 import static ru.pankkovv.auctioneerBot.model.Auction.bidding;
+import static ru.pankkovv.auctioneerBot.utils.Utils.containsAdmin;
 
+/**
+ * Команда, предоставляющая информацию для просмотра таблицы торгов
+ * доступ только для администратора
+ */
 @Slf4j
 public class ViewTableCommand extends Command {
 
@@ -25,9 +27,10 @@ public class ViewTableCommand extends Command {
 
         log.debug(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
 
-        if (admin.contains(userName)) {
+        if (containsAdmin(userName)) {
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                    String.format("Таблица:\n%s", bidding));
+                    String.format("username bet\n" +
+                            "%s", bidding));
         } else {
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Для просмотра таблицы торгов необходимы права администратора.");

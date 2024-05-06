@@ -12,6 +12,9 @@ import java.util.Comparator;
 import static ru.pankkovv.auctioneerBot.model.Auction.bidding;
 import static ru.pankkovv.auctioneerBot.model.Auction.lot;
 
+/**
+ * Команда, предоставляющая доступ к функции отмены ставки
+ */
 @Slf4j
 public class CancelCommand extends Command {
 
@@ -26,8 +29,10 @@ public class CancelCommand extends Command {
         log.debug(String.format("Пользователь %s. Начато выполнение команды %s", userName, this.getCommandIdentifier()));
 
         bidding.remove(userName);
+        lot.setCurrentPrice(bidding.values().stream().max(Comparator.comparing(Float::valueOf)).orElse(lot.getStartPrice()));
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                String.format("Ваша ставка отменена. Актуальная информация по лоту name:%s price:%s", lot.getName(), bidding.values().stream().max(Comparator.comparing(Float::valueOf))));
+                String.format("Ваша ставка отменена. Актуальная информация по лоту: %s" +
+                        "\n\n чтобы увидеть команды, нажмите /help", lot));
 
 
         log.debug(String.format("Пользователь %s. Завершено выполнение команды %s", userName, this.getCommandIdentifier()));
