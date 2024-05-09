@@ -25,6 +25,9 @@ public class HelpCommand extends Command {
 
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                 "Спешу напомнить, что у меня есть следующие функции:\n" +
+                        "/regadminkiselbot - регистрация админа\n" +
+                        "/create - создание лота\n" +
+                        "/view_table- просмотр таблицы торгов\n" +
                         "/bet - поднять ставку\n" +
                         "/cancel - отменить ставку\n" +
                         "/view_lot - просмотр актуальной информации торгуемого лота\n\n" +

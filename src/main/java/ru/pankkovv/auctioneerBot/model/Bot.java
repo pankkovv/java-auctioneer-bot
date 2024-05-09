@@ -4,9 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.pankkovv.auctioneerBot.mapper.NonCommand;
 import ru.pankkovv.auctioneerBot.service.admin.CreateLotCommand;
@@ -14,6 +17,9 @@ import ru.pankkovv.auctioneerBot.service.admin.RegistrationAdminCommand;
 import ru.pankkovv.auctioneerBot.service.admin.ViewTableCommand;
 import ru.pankkovv.auctioneerBot.service.open.*;
 import ru.pankkovv.auctioneerBot.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Бот
@@ -35,36 +41,49 @@ public final class Bot extends TelegramLongPollingCommandBot {
 
     public Bot(String botName, String botToken) {
         super();
-        log.debug("Конструктор суперкласса отработал");
         this.BOT_NAME = botName;
         this.BOT_TOKEN = botToken;
-        log.debug("Имя и токен присвоены");
-
         this.nonCommand = new NonCommand();
 
-        register(new StartCommand("start", "Старт"));
-        log.debug("Команда start создана");
+        List<BotCommand> listOfCommands = new ArrayList<>();
+        listOfCommands.add(new BotCommand("start", "Старт"));
+        listOfCommands.add(new BotCommand("help", "Помощь"));
+        listOfCommands.add(new BotCommand("registration", "Регистрация администратора"));
+        listOfCommands.add(new BotCommand("create", "Добавление нового лота"));
+        listOfCommands.add(new BotCommand("view_table", "Просмотр таблицы торгов"));
+        listOfCommands.add(new BotCommand("bet", "Поднять ставку"));
+        listOfCommands.add(new BotCommand("cancel", "Отменить ставку"));
+        listOfCommands.add(new BotCommand("view_lot", "Просмотр выставленного лота"));
 
-        register(new HelpCommand("help", "Помощь"));
-        log.debug("Команда help создана");
+        try{
+            this.execute(new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null));
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
 
-        register(new RegistrationAdminCommand("regadminkiselbot", "Регистрация администратора"));
-        log.debug("Команда registration создана");
-
-        register(new CreateLotCommand("create", "Добавление нового лота"));
-        log.debug("Команда create создана");
-
-        register(new ViewTableCommand("view_table", "Просмотр таблицы торгов"));
-        log.debug("Команда viewTable создана");
-
-        register(new BetCommand("bet", "Поднять ставку"));
-        log.debug("Команда bet создана");
-
-        register(new CancelCommand("cancel", "Отменить ставку"));
-        log.debug("Команда cancel создана");
-
-        register(new ViewLotCommand("view_lot", "Просмотр выставленного лота"));
-        log.debug("Команда viewLot создана");
+//                register(new StartCommand("start", "Старт"));
+//        log.debug("Команда start создана");
+//
+//        register(new HelpCommand("help", "Помощь"));
+//        log.debug("Команда help создана");
+//
+//        register(new RegistrationAdminCommand("registration", "Регистрация администратора"));
+//        log.debug("Команда registration создана");
+//
+//        register(new CreateLotCommand("create", "Добавление нового лота"));
+//        log.debug("Команда create создана");
+//
+//        register(new ViewTableCommand("view_table", "Просмотр таблицы торгов"));
+//        log.debug("Команда viewTable создана");
+//
+//        register(new BetCommand("bet", "Поднять ставку"));
+//        log.debug("Команда bet создана");
+//
+//        register(new CancelCommand("cancel", "Отменить ставку"));
+//        log.debug("Команда cancel создана");
+//
+//        register(new ViewLotCommand("view_lot", "Просмотр выставленного лота"));
+//        log.debug("Команда viewLot создана");
 
         log.info("Бот создан!");
     }
