@@ -15,8 +15,8 @@ public class AuctioneerBotApplication {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(new Bot(
-                    "eee_kisel_bot",
-                    "7016070458:AAHrtTP7_bv0hnXFY0dPK4ncU098x8fcnvw"));
+                    "eee_kiseeeel_bot",
+                    "6764355898:AAGFNc7hQU9CxT_ozHiPUzS-lBGXyr6Le_U"));
 
 
         } catch (TelegramApiException e) {

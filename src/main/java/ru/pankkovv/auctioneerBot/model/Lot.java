@@ -3,6 +3,8 @@ package ru.pankkovv.auctioneerBot.model;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.File;
+
 /**
  * Торгуемый лот
  */
@@ -13,11 +15,12 @@ public class Lot {
     private Float startPrice;
     private Float currentPrice;
     private Float step;
+    private File photo;
 
     public String toString() {
-        return "name= " + this.getName() +
-                ", start_price= " + this.getStartPrice() +
-                ", current_price= " + this.getCurrentPrice() +
-                ", step= " + this.getStep();
+        return this.getName().toUpperCase() +
+                "\nНачальная цена: " + this.getStartPrice() +
+                "\nТекущая цена: " + this.getCurrentPrice() +
+                "\nШаг ставки: " + this.getStep();
     }
 }
