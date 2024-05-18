@@ -8,9 +8,12 @@ import ru.pankkovv.auctioneerBot.enums.ButtonData;
 import ru.pankkovv.auctioneerBot.enums.Command;
 import ru.pankkovv.auctioneerBot.enums.CommandMessage;
 import ru.pankkovv.auctioneerBot.enums.ExceptionMessage;
+import ru.pankkovv.auctioneerBot.exception.AdminNotFoundException;
 import ru.pankkovv.auctioneerBot.exception.BetException;
+import ru.pankkovv.auctioneerBot.exception.LotNotFoundException;
 import ru.pankkovv.auctioneerBot.model.Button;
 import ru.pankkovv.auctioneerBot.model.Lot;
+import ru.pankkovv.auctioneerBot.utils.Utils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,6 +30,7 @@ public class NonCommandService {
     public SendPhoto nonCommandExecute(Long chatId, String userName, String text) {
         String answer;
         SendPhoto sendPhoto = new SendPhoto();
+        sendPhoto.setReplyMarkup(Button.getStartButton());
 
         String[] parameters = text.replaceAll("-", "")//избавляемся от отрицательных чисел
                 .replaceAll("/", "")//меняем ошибочный разделитель "запятая+пробел" на запятую
@@ -35,57 +39,50 @@ public class NonCommandService {
                 .split(",");
 
         if (parameters.length == 1) {
-
             if (Command.START.label.equals(parameters[0])) {
                 answer = CommandMessage.START.label;
                 sendPhoto.setPhoto(new InputFile(new File("imgBtn/start.jpg")));
-
             } else {
+                try (FileWriter fileWriter = new FileWriter("bidding.csv", true)) {
+                    Utils.containsLot();
+                    Float bet = validBet(parameters[0]);
 
-                if (lot != null) {
-
-                    try (FileWriter fileWriter = new FileWriter("bidding.csv", true)) {
-                        Float bet = validBet(parameters[0]);
-
-                        if (flag) {
-                            fileWriter.append("time;username;bet\n");
-                            flag = false;
-                        }
-
-                        bidding.put(userName, bet);
-                        lot.setCurrentPrice(bet);
-                        fileWriter.append(String.format("%s;%s;%s\n", LocalDateTime.now(), userName, bet));
-
-                        answer = String.format(CommandMessage.TRY_BET.label, bet);
-                        sendPhoto.setPhoto(new InputFile(new File("imgBtn/bet.jpg")));
-
-                    } catch (BetException e) {
-                        answer = ExceptionMessage.VALIDATE_BET_EXCEPTION.label;
-                        sendPhoto.setPhoto(new InputFile(new File("imgBtn/betExc.jpg")));
-                    } catch (Exception e) {
-                        answer = ExceptionMessage.NOT_FOUND_COMMAND_EXCEPTION.label;
-                        sendPhoto.setPhoto(new InputFile(new File("imgBtn/tgEr.jpg")));
+                    if (flag) {
+                        fileWriter.append("time;username;bet\n");
+                        flag = false;
                     }
 
-                } else {
-                    answer = ExceptionMessage.NOT_FOUND_LOT_EXCEPTION.label;
+                    bidding.put(userName, bet);
+                    lot.setCurrentPrice(bet);
+                    fileWriter.append(String.format("%s;%s;%s\n", LocalDateTime.now(), userName, bet));
+
+                    answer = String.format(CommandMessage.TRY_BET.label, bet);
+                    sendPhoto.setReplyMarkup(Button.getBetButton());
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/bet.jpg")));
+
+                } catch (BetException e) {
+                    answer = e.getMessage();
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/betExc.jpg")));
+                } catch (LotNotFoundException e) {
+                    answer = e.getMessage();
                     sendPhoto.setPhoto(new InputFile(new File("imgBtn/notFoundLot.jpg")));
+                } catch (Exception e) {
+                    answer = ExceptionMessage.NOT_FOUND_COMMAND_EXCEPTION.label;
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/tgEr.jpg")));
                 }
-
             }
-
         } else if (parameters.length == 3) {
-
-            if (admin.contains(userName)) {
+            try {
+                Utils.containsAdmin(userName);
                 lot = validLot(parameters, null);
+
                 answer = CommandMessage.TRY_CREATE_LOT.label;
+                sendPhoto.setReplyMarkup(Button.getLotButton());
                 sendPhoto.setPhoto(new InputFile(new File("imgBtn/create.jpg")));
-            } else {
-                answer = ExceptionMessage.NOT_FOUND_RULES_ADMIN_EXCEPTION.label;
+            } catch (AdminNotFoundException e) {
+                answer = e.getMessage();
                 sendPhoto.setPhoto(new InputFile(new File("imgBtn/notRulesAdmin.jpg")));
             }
-
-
         } else {
             answer = ExceptionMessage.NOT_FOUND_COMMAND_EXCEPTION.label;
             sendPhoto.setPhoto(new InputFile(new File("imgBtn/tgEr.jpg")));
@@ -94,11 +91,8 @@ public class NonCommandService {
         sendPhoto.setChatId(chatId.toString());
         sendPhoto.setCaption(answer);
 
-
         if (admin.contains(userName)) {
             sendPhoto.setReplyMarkup(Button.getAllButton());
-        } else {
-            sendPhoto.setReplyMarkup(Button.getStartButton());
         }
 
         return sendPhoto;
@@ -131,20 +125,21 @@ public class NonCommandService {
                 break;
 
             case "lot_btn":
-                if (lot != null && lot.getPhoto() != null) {
-                    text = CommandMessage.LOT.label + lot;
-                    sendPhoto.setPhoto(new InputFile(lot.getPhoto()));
-                } else if (lot != null) {
+                try {
+                    Utils.containsLot();
                     text = CommandMessage.LOT.label + lot;
                     sendPhoto.setPhoto(new InputFile(new File("imgBtn/lot.jpg")));
-                } else {
-                    text = ExceptionMessage.NOT_FOUND_LOT_EXCEPTION.label;
+
+                    if (lot.getPhoto() != null) {
+                        sendPhoto.setPhoto(new InputFile(lot.getPhoto()));
+                    }
+                } catch (LotNotFoundException e) {
+                    text = e.getMessage();
                     sendPhoto.setPhoto(new InputFile(new File("imgBtn/notFoundLot.jpg")));
                 }
 
                 sendPhoto.setCaption(text);
                 sendPhoto.setReplyMarkup(Button.getLotButton());
-
                 break;
 
             case "bet_btn":
@@ -155,7 +150,9 @@ public class NonCommandService {
                 break;
 
             case "cancel_btn":
-                if (bidding.containsKey(userName)) {
+                try {
+                    Utils.containsLot();
+                    Utils.containsBet(userName);
                     text = CommandMessage.CANCEL.label;
 
                     bidding.remove(userName);
@@ -165,8 +162,12 @@ public class NonCommandService {
 
                     sendPhoto.setCaption(text);
                     sendPhoto.setPhoto(new InputFile(new File("imgBtn/cancel.jpg")));
-                } else {
-                    text = ExceptionMessage.NOT_FOUND_BET_EXCEPTION.label;
+                } catch (LotNotFoundException e) {
+                    text = e.getMessage();
+                    sendPhoto.setCaption(text);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/notFoundLot.jpg")));
+                } catch (BetException e) {
+                    text = e.getMessage();
                     sendPhoto.setCaption(text);
                     sendPhoto.setPhoto(new InputFile(new File("imgBtn/betExc.jpg")));
                 }
@@ -239,12 +240,11 @@ public class NonCommandService {
 
         sendPhoto.setChatId(String.valueOf(chatId));
         sendPhoto.setCaption(answer);
+        sendPhoto.setReplyMarkup(Button.getStartButton());
         sendPhoto.setPhoto(new InputFile(new File("imgBtn/create.jpg")));
 
         if (admin.contains(userName)) {
             sendPhoto.setReplyMarkup(Button.getAllButton());
-        } else {
-            sendPhoto.setReplyMarkup(Button.getStartButton());
         }
 
         return sendPhoto;

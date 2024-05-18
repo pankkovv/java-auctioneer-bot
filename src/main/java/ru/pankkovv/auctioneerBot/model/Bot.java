@@ -46,13 +46,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
         this.nonCommandService = new NonCommandService();
 
 //        admin.add("pankkovv");
-        lot = Lot.builder()
-                .name("ring")
-                .startPrice(100.0F)
-                .currentPrice(100.0F)
-                .step(50.0F)
-                .photo(new File("lots/lot.png"))
-                .build();
+//        lot = Lot.builder().name("ring").startPrice(100.0F).currentPrice(100.0F).step(50.0F).build();
         log.info("Бот создан!");
     }
 

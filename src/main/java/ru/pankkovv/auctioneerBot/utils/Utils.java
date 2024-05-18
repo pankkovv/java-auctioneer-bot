@@ -1,11 +1,13 @@
 package ru.pankkovv.auctioneerBot.utils;
 
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
+import ru.pankkovv.auctioneerBot.enums.ExceptionMessage;
+import ru.pankkovv.auctioneerBot.exception.AdminNotFoundException;
+import ru.pankkovv.auctioneerBot.exception.BetException;
+import ru.pankkovv.auctioneerBot.exception.LotNotFoundException;
 
-import static ru.pankkovv.auctioneerBot.model.Auction.admin;
+import static ru.pankkovv.auctioneerBot.model.Auction.*;
 
 public class Utils {
     public static String getUserName(Update update) {
@@ -37,7 +39,21 @@ public class Utils {
         }
     }
 
-    public static boolean containsAdmin(String username) {
-        return admin.contains(username);
+    public static void containsAdmin(String username) {
+        if (!admin.contains(username)) {
+            throw new AdminNotFoundException(ExceptionMessage.NOT_FOUND_RULES_ADMIN_EXCEPTION.label);
+        }
+    }
+
+    public static void containsLot() {
+        if (lot == null) {
+            throw new LotNotFoundException(ExceptionMessage.NOT_FOUND_LOT_EXCEPTION.label);
+        }
+    }
+
+    public static void containsBet(String userName) {
+        if (bidding.containsKey(userName)) {
+            throw new BetException(ExceptionMessage.NOT_FOUND_LOT_EXCEPTION.label);
+        }
     }
 }
