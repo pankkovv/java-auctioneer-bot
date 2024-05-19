@@ -18,12 +18,6 @@ import ru.pankkovv.auctioneerBot.utils.Utils;
 import java.io.File;
 import java.util.List;
 
-import static ru.pankkovv.auctioneerBot.model.Auction.admin;
-import static ru.pankkovv.auctioneerBot.model.Auction.lot;
-
-/**
- * Бот
- */
 @Slf4j
 public final class Bot extends TelegramLongPollingCommandBot {
 
@@ -35,18 +29,12 @@ public final class Bot extends TelegramLongPollingCommandBot {
     @Setter
     private Auction auction;
 
-    /**
-     * Настройки файла для разных пользователей. Ключ - уникальный id чата
-     */
-
     public Bot(String botName, String botToken) {
         super();
         this.BOT_NAME = botName;
         this.BOT_TOKEN = botToken;
         this.nonCommandService = new NonCommandService();
 
-//        admin.add("pankkovv");
-//        lot = Lot.builder().name("ring").startPrice(100.0F).currentPrice(100.0F).step(50.0F).build();
         log.info("Бот создан!");
     }
 
@@ -60,18 +48,11 @@ public final class Bot extends TelegramLongPollingCommandBot {
         return BOT_NAME;
     }
 
-    /**
-     * Ответ на запрос, не являющийся командой
-     */
     @Override
     public void processNonCommandUpdate(Update update) {
         Message msg = update.getMessage();
         String userName = Utils.getUserName(update);
         Long chatId = Utils.getChatId(update);
-
-        //кнопка
-        //команда, ставка, данные о лоте - строка
-        //данные лота + фото, фото - файл с описанием
 
         try {
             if (update.hasCallbackQuery()) {

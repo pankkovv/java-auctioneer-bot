@@ -22,9 +22,6 @@ import java.util.Comparator;
 
 import static ru.pankkovv.auctioneerBot.model.Auction.*;
 
-/**
- * Обработка сообщения, не являющегося командой (т.е. обычного текста не начинающегося с "/")
- */
 @Slf4j
 public class NonCommandService {
     public SendPhoto nonCommandExecute(Long chatId, String userName, String text) {
@@ -197,9 +194,24 @@ public class NonCommandService {
                 break;
 
             case "delete_btn":
-                text = CommandMessage.DELETE.label;
+                try {
+                    Utils.containsAdmin(userName);
+                    Utils.containsLot();
+
+                    lot = null;
+
+                    text = CommandMessage.DELETE.label;
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/delete.jpg")));
+                } catch (AdminNotFoundException e) {
+                    text = e.getMessage();
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/notRulesAdmin.jpg")));
+                } catch (LotNotFoundException e) {
+                    text = e.getMessage();
+                    sendPhoto.setCaption(text);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/notFoundLot.jpg")));
+                }
+
                 sendPhoto.setCaption(text);
-                sendPhoto.setPhoto(new InputFile(new File("imgBtn/delete.jpg")));
                 sendPhoto.setReplyMarkup(Button.getStartButton());
                 break;
 

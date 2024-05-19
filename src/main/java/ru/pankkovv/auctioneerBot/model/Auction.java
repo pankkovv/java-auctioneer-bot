@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Аукцион
- */
 public class Auction {
     public static Lot lot;
     public static List<String> admin = new ArrayList<>();

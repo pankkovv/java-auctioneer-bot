@@ -5,9 +5,6 @@ import lombok.Data;
 
 import java.io.File;
 
-/**
- * Торгуемый лот
- */
 @Data
 @Builder
 public class Lot {
