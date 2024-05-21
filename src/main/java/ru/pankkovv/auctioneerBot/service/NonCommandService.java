@@ -30,10 +30,10 @@ public class NonCommandService {
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setReplyMarkup(Button.getStartButton());
 
-        String[] parameters = text.replaceAll("-", "")//избавляемся от отрицательных чисел
-                .replaceAll("/", "")//меняем ошибочный разделитель "запятая+пробел" на запятую
-                .replaceAll(", ", ",")//меняем ошибочный разделитель "запятая+пробел" на запятую
-                .replaceAll(" ", ",")//меняем разделитель-пробел на запятую
+        String[] parameters = text.replaceAll("-", "")
+                .replaceAll("/", "")
+                .replaceAll(", ", ",")
+                .replaceAll(" ", ",")
                 .split(",");
 
         if (parameters.length == 1) {
@@ -256,10 +256,10 @@ public class NonCommandService {
         String answer;
         SendPhoto sendPhoto = new SendPhoto();
 
-        String[] parameters = text.replaceAll("-", "")//избавляемся от отрицательных чисел
-                .replaceAll("/", "")//меняем ошибочный разделитель "запятая+пробел" на запятую
-                .replaceAll(", ", ",")//меняем ошибочный разделитель "запятая+пробел" на запятую
-                .replaceAll(" ", ",")//меняем разделитель-пробел на запятую
+        String[] parameters = text.replaceAll("-", "")
+                .replaceAll("/", "")
+                .replaceAll(", ", ",")
+                .replaceAll(" ", ",")
                 .split(",");
 
         if (!text.isEmpty()) {
