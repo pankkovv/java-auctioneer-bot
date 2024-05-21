@@ -4,7 +4,8 @@ public enum Command {
     START("start"),
     HELP("help"),
     LOT("lot"),
-    BET("bet"),
+    CREATE_BET("create_bet"),
+    GET_BET("get_bet"),
     CANCEL("cancel"),
     REGISTRATION("registration"),
     CREATE("create"),
@@ -14,7 +15,7 @@ public enum Command {
 
     public final String label;
 
-    Command(String label){
+    Command(String label) {
         this.label = label;
     }
 }

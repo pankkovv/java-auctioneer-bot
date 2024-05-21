@@ -52,8 +52,8 @@ public class Utils {
     }
 
     public static void containsBet(String userName) {
-        if (bidding.containsKey(userName)) {
-            throw new BetException(ExceptionMessage.NOT_FOUND_LOT_EXCEPTION.label);
+        if (!bidding.containsKey(userName)) {
+            throw new BetException(ExceptionMessage.NOT_FOUND_BET_EXCEPTION.label);
         }
     }
 }

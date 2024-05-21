@@ -53,7 +53,7 @@ public class NonCommandService {
                     lot.setCurrentPrice(bet);
                     fileWriter.append(String.format("%s;%s;%s\n", LocalDateTime.now(), userName, bet));
 
-                    answer = String.format(CommandMessage.TRY_BET.label, bet);
+                    answer = String.format(CommandMessage.TRY_BET.label, userName, bet);
                     sendPhoto.setReplyMarkup(Button.getBetButton());
                     sendPhoto.setPhoto(new InputFile(new File("imgBtn/bet.jpg")));
 
@@ -139,18 +139,36 @@ public class NonCommandService {
                 sendPhoto.setReplyMarkup(Button.getLotButton());
                 break;
 
-            case "bet_btn":
-                text = CommandMessage.BET.label;
+            case "create_bet_btn":
+                text = CommandMessage.CREATE_BET.label;
                 sendPhoto.setCaption(text);
                 sendPhoto.setPhoto(new InputFile(new File("imgBtn/bet.jpg")));
-                sendPhoto.setReplyMarkup(Button.getBetButton());
+                sendPhoto.setReplyMarkup(Button.getCreateBetButton());
+                break;
+
+            case "get_bet_btn":
+                try {
+                    Utils.containsBet(userName);
+                    text = String.format(CommandMessage.GET_BET.label, userName, bidding.get(userName));
+
+                    sendPhoto.setCaption(text);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/bet.jpg")));
+                    sendPhoto.setReplyMarkup(Button.getBetButton());
+                } catch (BetException e) {
+                    text = e.getMessage();
+                    sendPhoto.setCaption(text);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/betExc.jpg")));
+                    sendPhoto.setReplyMarkup(Button.getCreateBetButton());
+                }
+
+
                 break;
 
             case "cancel_btn":
                 try {
                     Utils.containsLot();
                     Utils.containsBet(userName);
-                    text = CommandMessage.CANCEL.label;
+                    text = String.format(CommandMessage.CANCEL.label, userName);
 
                     bidding.remove(userName);
                     lot.setCurrentPrice(bidding.values().stream()
@@ -290,7 +308,7 @@ public class NonCommandService {
                 bet.equals(maxPrice) ||
                 (bet - maxPrice) < lot.getStep() ||
                 (bet - maxPrice) % lot.getStep() != 0) {
-            throw new BetException(ExceptionMessage.VALIDATE_BET_EXCEPTION.label);
+            throw new BetException(ExceptionMessage.VALIDATE_CREATE_BET_EXCEPTION.label);
         }
 
         return bet;

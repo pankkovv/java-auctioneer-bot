@@ -4,7 +4,8 @@ public enum ButtonMessage {
     START("Главное меню"),
     HELP("Помощь"),
     LOT("Посмотреть лот"),
-    BET("Сделать ставку"),
+    CREATE_BET("Сделать ставку"),
+    GET_BET("Посмотреть свою ставку"),
     CANCEL("Отменить ставку"),
     REGISTRATION("Регистрация"),
     CREATE("Создать лот"),
@@ -14,7 +15,7 @@ public enum ButtonMessage {
 
     public final String label;
 
-    ButtonMessage(String label){
+    ButtonMessage(String label) {
         this.label = label;
     }
 }

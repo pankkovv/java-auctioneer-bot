@@ -29,9 +29,13 @@ public class Button {
         lotButton.setText(ButtonMessage.LOT.label);
         lotButton.setCallbackData(ButtonData.LOT_BTN.label);
 
-        InlineKeyboardButton betButton = new InlineKeyboardButton();
-        betButton.setText(ButtonMessage.BET.label);
-        betButton.setCallbackData(ButtonData.BET_BTN.label);
+        InlineKeyboardButton createBetButton = new InlineKeyboardButton();
+        createBetButton.setText(ButtonMessage.CREATE_BET.label);
+        createBetButton.setCallbackData(ButtonData.CREATE_BET_BTN.label);
+
+        InlineKeyboardButton getBetButton = new InlineKeyboardButton();
+        getBetButton.setText(ButtonMessage.GET_BET.label);
+        getBetButton.setCallbackData(ButtonData.GET_BET_BTN.label);
 
         InlineKeyboardButton cancelButton = new InlineKeyboardButton();
         cancelButton.setText(ButtonMessage.CANCEL.label);
@@ -66,8 +70,9 @@ public class Button {
         rowInLineTwo.add(helpButton);
         rowInLineTwo.add(lotButton);
 
-        rowInLineThree.add(betButton);
+        rowInLineThree.add(createBetButton);
         rowInLineThree.add(cancelButton);
+        rowInLineThree.add(getBetButton);
 
         rowsInLine.add(rowInLineOne);
         rowsInLine.add(rowInLineTwo);
@@ -85,14 +90,19 @@ public class Button {
         List<InlineKeyboardButton> rowInLineTwo = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineThree = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineFour = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineFive = new ArrayList<>();
 
         InlineKeyboardButton lotButton = new InlineKeyboardButton();
         lotButton.setText(ButtonMessage.LOT.label);
         lotButton.setCallbackData(ButtonData.LOT_BTN.label);
 
-        InlineKeyboardButton betButton = new InlineKeyboardButton();
-        betButton.setText(ButtonMessage.BET.label);
-        betButton.setCallbackData(ButtonData.BET_BTN.label);
+        InlineKeyboardButton createBetButton = new InlineKeyboardButton();
+        createBetButton.setText(ButtonMessage.CREATE_BET.label);
+        createBetButton.setCallbackData(ButtonData.CREATE_BET_BTN.label);
+
+        InlineKeyboardButton getBetButton = new InlineKeyboardButton();
+        getBetButton.setText(ButtonMessage.GET_BET.label);
+        getBetButton.setCallbackData(ButtonData.GET_BET_BTN.label);
 
         InlineKeyboardButton cancelButton = new InlineKeyboardButton();
         cancelButton.setText(ButtonMessage.CANCEL.label);
@@ -103,14 +113,16 @@ public class Button {
         helpButton.setCallbackData(ButtonData.HELP_BTN.label);
 
         rowInLineOne.add(lotButton);
-        rowInLineTwo.add(betButton);
-        rowInLineThree.add(cancelButton);
-        rowInLineFour.add(helpButton);
+        rowInLineTwo.add(getBetButton);
+        rowInLineThree.add(createBetButton);
+        rowInLineFour.add(cancelButton);
+        rowInLineFive.add(helpButton);
 
         rowsInLine.add(rowInLineOne);
         rowsInLine.add(rowInLineTwo);
         rowsInLine.add(rowInLineThree);
         rowsInLine.add(rowInLineFour);
+        rowsInLine.add(rowInLineFive);
 
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
 
@@ -124,6 +136,7 @@ public class Button {
         List<InlineKeyboardButton> rowInLineTwo = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineThree = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineFour = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineFive = new ArrayList<>();
 
         InlineKeyboardButton startButton = new InlineKeyboardButton();
         startButton.setText(ButtonMessage.START.label);
@@ -133,9 +146,13 @@ public class Button {
         lotButton.setText(ButtonMessage.LOT.label);
         lotButton.setCallbackData(ButtonData.LOT_BTN.label);
 
-        InlineKeyboardButton betButton = new InlineKeyboardButton();
-        betButton.setText(ButtonMessage.BET.label);
-        betButton.setCallbackData(ButtonData.BET_BTN.label);
+        InlineKeyboardButton createBetButton = new InlineKeyboardButton();
+        createBetButton.setText(ButtonMessage.CREATE_BET.label);
+        createBetButton.setCallbackData(ButtonData.CREATE_BET_BTN.label);
+
+        InlineKeyboardButton getBetButton = new InlineKeyboardButton();
+        getBetButton.setText(ButtonMessage.GET_BET.label);
+        getBetButton.setCallbackData(ButtonData.GET_BET_BTN.label);
 
         InlineKeyboardButton cancelButton = new InlineKeyboardButton();
         cancelButton.setText(ButtonMessage.CANCEL.label);
@@ -143,13 +160,15 @@ public class Button {
 
         rowInLineOne.add(startButton);
         rowInLineTwo.add(lotButton);
-        rowInLineThree.add(betButton);
-        rowInLineFour.add(cancelButton);
+        rowInLineThree.add(getBetButton);
+        rowInLineFour.add(createBetButton);
+        rowInLineFive.add(cancelButton);
 
         rowsInLine.add(rowInLineOne);
         rowsInLine.add(rowInLineTwo);
         rowsInLine.add(rowInLineThree);
         rowsInLine.add(rowInLineFour);
+        rowsInLine.add(rowInLineFive);
 
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
 
@@ -163,6 +182,7 @@ public class Button {
         List<InlineKeyboardButton> rowInLineTwo = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineThree = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineFour = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineFive = new ArrayList<>();
 
         InlineKeyboardButton startButton = new InlineKeyboardButton();
         startButton.setText(ButtonMessage.START.label);
@@ -172,23 +192,61 @@ public class Button {
         helpButton.setText(ButtonMessage.HELP.label);
         helpButton.setCallbackData(ButtonData.HELP_BTN.label);
 
-        InlineKeyboardButton betButton = new InlineKeyboardButton();
-        betButton.setText(ButtonMessage.BET.label);
-        betButton.setCallbackData(ButtonData.BET_BTN.label);
+        InlineKeyboardButton createBetButton = new InlineKeyboardButton();
+        createBetButton.setText(ButtonMessage.CREATE_BET.label);
+        createBetButton.setCallbackData(ButtonData.CREATE_BET_BTN.label);
+
+        InlineKeyboardButton getBetButton = new InlineKeyboardButton();
+        getBetButton.setText(ButtonMessage.GET_BET.label);
+        getBetButton.setCallbackData(ButtonData.GET_BET_BTN.label);
 
         InlineKeyboardButton cancelButton = new InlineKeyboardButton();
         cancelButton.setText(ButtonMessage.CANCEL.label);
         cancelButton.setCallbackData(ButtonData.CANCEL_BTN.label);
 
         rowInLineOne.add(startButton);
-        rowInLineTwo.add(betButton);
-        rowInLineThree.add(cancelButton);
-        rowInLineFour.add(helpButton);
+        rowInLineTwo.add(getBetButton);
+        rowInLineThree.add(createBetButton);
+        rowInLineFour.add(cancelButton);
+        rowInLineFive.add(helpButton);
 
         rowsInLine.add(rowInLineOne);
         rowsInLine.add(rowInLineTwo);
         rowsInLine.add(rowInLineThree);
         rowsInLine.add(rowInLineFour);
+        rowsInLine.add(rowInLineFive);
+
+        inlineKeyboardMarkup.setKeyboard(rowsInLine);
+
+        return inlineKeyboardMarkup;
+    }
+
+    public static InlineKeyboardMarkup getCreateBetButton() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineOne = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineTwo = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineThree = new ArrayList<>();
+
+        InlineKeyboardButton startButton = new InlineKeyboardButton();
+        startButton.setText(ButtonMessage.START.label);
+        startButton.setCallbackData(ButtonData.START_BTN.label);
+
+        InlineKeyboardButton helpButton = new InlineKeyboardButton();
+        helpButton.setText(ButtonMessage.HELP.label);
+        helpButton.setCallbackData(ButtonData.HELP_BTN.label);
+
+        InlineKeyboardButton lotButton = new InlineKeyboardButton();
+        lotButton.setText(ButtonMessage.LOT.label);
+        lotButton.setCallbackData(ButtonData.LOT_BTN.label);
+
+        rowInLineOne.add(startButton);
+        rowInLineTwo.add(lotButton);
+        rowInLineThree.add(helpButton);
+
+        rowsInLine.add(rowInLineOne);
+        rowsInLine.add(rowInLineTwo);
+        rowsInLine.add(rowInLineThree);
 
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
 
@@ -255,8 +313,8 @@ public class Button {
         lotButton.setCallbackData(ButtonData.LOT_BTN.label);
 
         InlineKeyboardButton betButton = new InlineKeyboardButton();
-        betButton.setText(ButtonMessage.BET.label);
-        betButton.setCallbackData(ButtonData.BET_BTN.label);
+        betButton.setText(ButtonMessage.CREATE_BET.label);
+        betButton.setCallbackData(ButtonData.CREATE_BET_BTN.label);
 
         rowInLineOne.add(startButton);
         rowInLineTwo.add(lotButton);
