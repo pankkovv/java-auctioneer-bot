@@ -308,7 +308,7 @@ public class NonCommandService {
                 bet.equals(maxPrice) ||
                 (bet - maxPrice) < lot.getStep() ||
                 (bet - maxPrice) % lot.getStep() != 0) {
-            throw new BetException(ExceptionMessage.VALIDATE_CREATE_BET_EXCEPTION.label);
+            throw new BetException(String.format(ExceptionMessage.VALIDATE_CREATE_BET_EXCEPTION.label, lot.getCurrentPrice()));
         }
 
         return bet;

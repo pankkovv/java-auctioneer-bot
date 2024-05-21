@@ -16,8 +16,8 @@ public class Lot {
 
     public String toString() {
         return this.getName().toUpperCase() +
-                "\nНачальная цена: " + this.getStartPrice() +
-                "\nТекущая цена: " + this.getCurrentPrice() +
-                "\nШаг ставки: " + this.getStep();
+                "\nНачальная цена: " + this.getStartPrice() + "₽" +
+                "\nТекущая цена: " + this.getCurrentPrice() + "₽" +
+                "\nШаг ставки: " + this.getStep() + "₽";
     }
 }
