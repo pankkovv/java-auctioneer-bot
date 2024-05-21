@@ -17,7 +17,8 @@ import ru.pankkovv.auctioneerBot.utils.Utils;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 
 import static ru.pankkovv.auctioneerBot.model.Auction.*;
@@ -43,6 +44,7 @@ public class NonCommandService {
                 try (FileWriter fileWriter = new FileWriter("bidding.csv", true)) {
                     Utils.containsLot();
                     Float bet = validBet(parameters[0]);
+                    DateTimeFormatter formatterWriter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
                     if (flag) {
                         fileWriter.append("time;username;bet\n");
@@ -51,7 +53,7 @@ public class NonCommandService {
 
                     bidding.put(userName, bet);
                     lot.setCurrentPrice(bet);
-                    fileWriter.append(String.format("%s;%s;%s\n", LocalDateTime.now(), userName, bet));
+                    fileWriter.append(String.format("%s;%s;%s\n", LocalTime.now().format(formatterWriter), userName, bet));
 
                     answer = String.format(CommandMessage.TRY_BET.label, userName, bet);
                     sendPhoto.setReplyMarkup(Button.getBetButton());
