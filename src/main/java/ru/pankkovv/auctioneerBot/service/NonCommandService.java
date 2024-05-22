@@ -243,7 +243,7 @@ public class NonCommandService {
                     StringBuilder tableBidding = new StringBuilder();
 
                     tableBidding.append(CommandMessage.TABLE.label);
-                    for(Map.Entry<String, Float> user : bidding.entrySet()){
+                    for (Map.Entry<String, Float> user : bidding.entrySet()) {
                         tableBidding.append(String.format("\n %s - %s", user.getKey(), user.getValue()));
                     }
 
