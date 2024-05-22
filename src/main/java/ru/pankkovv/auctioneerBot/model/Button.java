@@ -16,6 +16,13 @@ public class Button {
         List<InlineKeyboardButton> rowInLineOne = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineTwo = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineThree = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineFour = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineFive = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineSix = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineSeven = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineEight = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineNine = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineTen = new ArrayList<>();
 
         InlineKeyboardButton startButton = new InlineKeyboardButton();
         startButton.setText(ButtonMessage.START.label);
@@ -62,21 +69,26 @@ public class Button {
         tableButton.setCallbackData(ButtonData.TABLE_BTN.label);
 
         rowInLineOne.add(createButton);
-        rowInLineOne.add(updateButton);
-        rowInLineOne.add(deleteButton);
-        rowInLineOne.add(tableButton);
-
-        rowInLineTwo.add(startButton);
-        rowInLineTwo.add(helpButton);
-        rowInLineTwo.add(lotButton);
-
-        rowInLineThree.add(createBetButton);
-        rowInLineThree.add(cancelButton);
-        rowInLineThree.add(getBetButton);
+        rowInLineTwo.add(updateButton);
+        rowInLineThree.add(deleteButton);
+        rowInLineFour.add(tableButton);
+        rowInLineFive.add(startButton);
+        rowInLineSix.add(helpButton);
+        rowInLineSeven.add(lotButton);
+        rowInLineEight.add(createBetButton);
+        rowInLineNine.add(cancelButton);
+        rowInLineTen.add(getBetButton);
 
         rowsInLine.add(rowInLineOne);
         rowsInLine.add(rowInLineTwo);
         rowsInLine.add(rowInLineThree);
+        rowsInLine.add(rowInLineFour);
+        rowsInLine.add(rowInLineFive);
+        rowsInLine.add(rowInLineSix);
+        rowsInLine.add(rowInLineSeven);
+        rowsInLine.add(rowInLineEight);
+        rowsInLine.add(rowInLineNine);
+        rowsInLine.add(rowInLineTen);
 
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
 

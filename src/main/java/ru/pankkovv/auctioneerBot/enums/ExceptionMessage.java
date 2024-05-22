@@ -10,7 +10,8 @@ public enum ExceptionMessage {
             "Попробуйте еще раз \uD83D\uDE0A"),
     NOT_FOUND_RULES_ADMIN_EXCEPTION("Для выполнения данной команды необходимы права администратора."),
     NOT_FOUND_LOT_EXCEPTION("Ни один лот еще не зарегистрирован."),
-    NOT_FOUND_BET_EXCEPTION("Ни одной вашей ставки не получилось найти.");
+    NOT_FOUND_BET_EXCEPTION("Ни одной вашей ставки не получилось найти."),
+    NOT_FOUND_BIDDING_EXCEPTION("Таблица торгов пустая.");
 
     public final String label;
 

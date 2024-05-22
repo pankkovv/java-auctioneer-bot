@@ -1,17 +1,17 @@
 package ru.pankkovv.auctioneerBot.enums;
 
 public enum ButtonMessage {
-    START("Главное меню"),
-    HELP("Помощь"),
-    LOT("Посмотреть лот"),
-    CREATE_BET("Сделать ставку"),
-    GET_BET("Посмотреть свою ставку"),
-    CANCEL("Отменить ставку"),
-    REGISTRATION("Регистрация"),
-    CREATE("Создать лот"),
-    UPDATE("Обновить лот"),
-    DELETE("Удалить лот"),
-    TABLE("Таблица торгов");
+    START("Главное меню \uD83D\uDC8C"),
+    HELP("Помощь \uD83E\uDD7A"),
+    LOT("Посмотреть лот \uD83D\uDC8D"),
+    CREATE_BET("Сделать ставку \uD83D\uDCB0"),
+    GET_BET("Посмотреть свою ставку \uD83D\uDC40"),
+    CANCEL("Отменить ставку ❌"),
+    REGISTRATION("Регистрация \uD83E\uDD1D"),
+    CREATE("Создать лот \uD83C\uDF1F"),
+    UPDATE("Обновить лот \uD83E\uDEF6"),
+    DELETE("Удалить лот \uD83D\uDDD1"),
+    TABLE("Таблица торгов \uD83E\uDDEE");
 
     public final String label;
 

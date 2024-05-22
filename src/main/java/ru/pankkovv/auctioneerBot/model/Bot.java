@@ -35,6 +35,8 @@ public final class Bot extends TelegramLongPollingCommandBot {
         this.BOT_TOKEN = botToken;
         this.nonCommandService = new NonCommandService();
 
+        Auction.admin.add("eee_kisel");
+        Auction.admin.add("pankkovv");
         log.info("Бот создан!");
     }
 

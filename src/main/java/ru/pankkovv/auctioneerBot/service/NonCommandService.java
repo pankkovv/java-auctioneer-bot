@@ -20,6 +20,7 @@ import java.io.FileWriter;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Map;
 
 import static ru.pankkovv.auctioneerBot.model.Auction.*;
 
@@ -236,9 +237,30 @@ public class NonCommandService {
                 break;
 
             case "table_btn":
-                text = CommandMessage.TABLE.label;
-                sendPhoto.setCaption(text);
-                sendPhoto.setPhoto(new InputFile(new File("imgBtn/table.jpg")));
+                try {
+                    Utils.containsLot();
+                    Utils.containsBidding();
+                    StringBuilder tableBidding = new StringBuilder();
+
+                    tableBidding.append(CommandMessage.TABLE.label);
+                    for(Map.Entry<String, Float> user : bidding.entrySet()){
+                        tableBidding.append(String.format("\n %s - %s", user.getKey(), user.getValue()));
+                    }
+
+                    text = tableBidding.toString();
+
+                    sendPhoto.setCaption(text);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/table.jpg")));
+                } catch (LotNotFoundException e) {
+                    text = e.getMessage();
+                    sendPhoto.setCaption(text);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/notFoundLot.jpg")));
+                } catch (BetException e) {
+                    text = e.getMessage();
+                    sendPhoto.setCaption(text);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/betExc.jpg")));
+                }
+
                 sendPhoto.setReplyMarkup(Button.getStartButton());
                 break;
         }

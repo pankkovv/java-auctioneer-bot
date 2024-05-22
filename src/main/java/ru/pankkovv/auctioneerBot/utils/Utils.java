@@ -56,4 +56,10 @@ public class Utils {
             throw new BetException(ExceptionMessage.NOT_FOUND_BET_EXCEPTION.label);
         }
     }
+
+    public static void containsBidding() {
+        if (bidding.isEmpty()) {
+            throw new BetException(ExceptionMessage.NOT_FOUND_BIDDING_EXCEPTION.label);
+        }
+    }
 }
