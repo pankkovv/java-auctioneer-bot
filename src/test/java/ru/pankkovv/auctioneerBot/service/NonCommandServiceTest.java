@@ -53,7 +53,7 @@ class NonCommandServiceTest {
     public void createBetTest() {
         SendPhoto expectedSend = SendPhoto.builder()
                 .chatId("1")
-                .caption("Ваша ставка 220.0 успешно принята!")
+                .caption("userNameTest, ваша ставка 220.0₽ успешно принята!")
                 .photo(new InputFile()).build();
 
         SendPhoto actualSend = service.nonCommandExecute(1L, "userNameTest", "220");
@@ -65,7 +65,7 @@ class NonCommandServiceTest {
     public void deleteBetTest() {
         SendPhoto expectedSend = SendPhoto.builder()
                 .chatId("1")
-                .caption("Ваша ставка отменена.")
+                .caption("userNameTest, ваша ставка отменена")
                 .photo(new InputFile()).build();
 
         CallbackQuery cbqOne = new CallbackQuery();
@@ -73,6 +73,8 @@ class NonCommandServiceTest {
         msgOne.setCaption("cancel_btn");
         cbqOne.setData("cancel_btn");
         cbqOne.setMessage(msgOne);
+
+        service.nonCommandExecute(1L, "userNameTest", "220");
         SendPhoto actualSend = (SendPhoto) service.nonCommandExecute(1L, "userNameTest", cbqOne);
 
         Assertions.assertEquals(expectedSend.getCaption(), actualSend.getCaption());
@@ -178,6 +180,7 @@ class NonCommandServiceTest {
                         "1. Ваша цена не может быть меньше актуальной стоимости лота \n" +
                         "2. Увеличение цены лота не может быть меньше установленного шага торгов \n" +
                         "3. Увеличение цены лота должно быть кратно установленному шагу торгов\n\n" +
+                        "Возможно кто-то предложил ставку выше, актуальная цена на данный момент: 100.0₽\n\n" +
                         "Попробуйте еще раз \uD83D\uDE0A")
                 .photo(new InputFile()).build();
 
