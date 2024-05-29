@@ -11,7 +11,11 @@ public enum ButtonData {
     CREATE_BTN("create_btn"),
     UPDATE_BTN("update_btn"),
     DELETE_BTN("delete_btn"),
-    TABLE_BTN("table_btn");
+    TABLE_BTN("table_btn"),
+    DOWNLOAD_TABLE_BTN("download_btn"),
+    CLEAR_BIDDING_BTN("clear_bidding_btn"),
+    YES_CLEAR_BTN("yes_clear_btn"),
+    NO_BTN("no_btn");
 
     public final String label;
 

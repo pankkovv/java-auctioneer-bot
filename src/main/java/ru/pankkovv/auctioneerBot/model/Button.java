@@ -23,6 +23,9 @@ public class Button {
         List<InlineKeyboardButton> rowInLineEight = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineNine = new ArrayList<>();
         List<InlineKeyboardButton> rowInLineTen = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineEleven = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineTwelve = new ArrayList<>();
+
 
         InlineKeyboardButton startButton = new InlineKeyboardButton();
         startButton.setText(ButtonMessage.START.label);
@@ -68,16 +71,27 @@ public class Button {
         tableButton.setText(ButtonMessage.TABLE.label);
         tableButton.setCallbackData(ButtonData.TABLE_BTN.label);
 
-        rowInLineOne.add(createButton);
-        rowInLineTwo.add(updateButton);
-        rowInLineThree.add(deleteButton);
-        rowInLineFour.add(tableButton);
+        InlineKeyboardButton downloadButton = new InlineKeyboardButton();
+        downloadButton.setText(ButtonMessage.DOWNLOAD_TABLE.label);
+        downloadButton.setCallbackData(ButtonData.DOWNLOAD_TABLE_BTN.label);
+
+        InlineKeyboardButton clearButton = new InlineKeyboardButton();
+        clearButton.setText(ButtonMessage.CLEAR_BIDDING.label);
+        clearButton.setCallbackData(ButtonData.CLEAR_BIDDING_BTN.label);
+
+
+        rowInLineOne.add(tableButton);
+        rowInLineTwo.add(createButton);
+        rowInLineThree.add(updateButton);
+        rowInLineFour.add(deleteButton);
         rowInLineFive.add(startButton);
         rowInLineSix.add(helpButton);
         rowInLineSeven.add(lotButton);
-        rowInLineEight.add(createBetButton);
-        rowInLineNine.add(cancelButton);
-        rowInLineTen.add(getBetButton);
+        rowInLineEight.add(getBetButton);
+        rowInLineNine.add(createBetButton);
+        rowInLineTen.add(cancelButton);
+        rowInLineEleven.add(downloadButton);
+        rowInLineTwelve.add(clearButton);
 
         rowsInLine.add(rowInLineOne);
         rowsInLine.add(rowInLineTwo);
@@ -89,6 +103,8 @@ public class Button {
         rowsInLine.add(rowInLineEight);
         rowsInLine.add(rowInLineNine);
         rowsInLine.add(rowInLineTen);
+        rowsInLine.add(rowInLineEleven);
+        rowsInLine.add(rowInLineTwelve);
 
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
 
@@ -337,6 +353,32 @@ public class Button {
         rowsInLine.add(rowInLineTwo);
         rowsInLine.add(rowInLineThree);
         rowsInLine.add(rowInLineFour);
+
+        inlineKeyboardMarkup.setKeyboard(rowsInLine);
+
+        return inlineKeyboardMarkup;
+    }
+
+    public static InlineKeyboardMarkup getChoiceButton() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineOne = new ArrayList<>();
+        List<InlineKeyboardButton> rowInLineTwo = new ArrayList<>();
+
+        InlineKeyboardButton yesClearButton = new InlineKeyboardButton();
+        yesClearButton.setText(ButtonMessage.YES_CLEAR.label);
+        yesClearButton.setCallbackData(ButtonData.YES_CLEAR_BTN.label);
+
+        InlineKeyboardButton noButton = new InlineKeyboardButton();
+        noButton.setText(ButtonMessage.NO.label);
+        noButton.setCallbackData(ButtonData.NO_BTN.label);
+
+
+        rowInLineOne.add(yesClearButton);
+        rowInLineTwo.add(noButton);
+
+        rowsInLine.add(rowInLineOne);
+        rowsInLine.add(rowInLineTwo);
 
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
 

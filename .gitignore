@@ -1,3 +1,4 @@
+src/main/java/ru/pankkovv/auctioneerBot/AuctioneerBotApplication.java
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

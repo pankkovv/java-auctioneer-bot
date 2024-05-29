@@ -1,7 +1,8 @@
 package ru.pankkovv.auctioneerBot.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageCaption;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import ru.pankkovv.auctioneerBot.enums.ButtonData;
@@ -11,6 +12,7 @@ import ru.pankkovv.auctioneerBot.enums.ExceptionMessage;
 import ru.pankkovv.auctioneerBot.exception.AdminNotFoundException;
 import ru.pankkovv.auctioneerBot.exception.BetException;
 import ru.pankkovv.auctioneerBot.exception.LotNotFoundException;
+import ru.pankkovv.auctioneerBot.model.Auction;
 import ru.pankkovv.auctioneerBot.model.Button;
 import ru.pankkovv.auctioneerBot.model.Lot;
 import ru.pankkovv.auctioneerBot.utils.Utils;
@@ -24,7 +26,6 @@ import java.util.Map;
 
 import static ru.pankkovv.auctioneerBot.model.Auction.*;
 
-@Slf4j
 public class NonCommandService {
     public SendPhoto nonCommandExecute(Long chatId, String userName, String text) {
         String answer;
@@ -99,8 +100,6 @@ public class NonCommandService {
     }
 
     public Object nonCommandExecute(Long chatId, String userName, CallbackQuery cbq) {
-        log.debug(String.format("Начата обработка сообщения \"%s\", не являющегося командой", cbq.getMessage().getText()));
-
         SendPhoto sendPhoto = new SendPhoto();
 
         String button = ButtonData.valueOf(cbq.getData().toUpperCase()).label;
@@ -263,6 +262,32 @@ public class NonCommandService {
 
                 sendPhoto.setReplyMarkup(Button.getStartButton());
                 break;
+
+            case "download_btn":
+                text = "download";
+                break;
+            case "clear_bidding_btn":
+                text = "Вы точно хотите стереть таблицу и лот?";
+
+                sendPhoto.setChatId(String.valueOf(chatId));
+                sendPhoto.setCaption(text);
+                sendPhoto.setPhoto(new InputFile(new File("imgBtn/table.jpg")));
+                sendPhoto.setReplyMarkup(Button.getChoiceButton());
+                return sendPhoto;
+
+            case "yes_clear_btn":
+                text = "Ваши торги успешно очищены!";
+                lot = null;
+                bidding.clear();
+
+                sendPhoto.setCaption(text);
+                sendPhoto.setPhoto(new InputFile(new File("imgBtn/table.jpg")));
+                sendPhoto.setReplyMarkup(Button.getStartButton());
+                break;
+
+            case "no_btn":
+                cbq.setData("start_btn");
+                return nonCommandExecute(chatId, userName, cbq);
         }
 
         sendPhoto.setChatId(String.valueOf(chatId));

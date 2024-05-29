@@ -11,7 +11,11 @@ public enum ButtonMessage {
     CREATE("Создать лот \uD83C\uDF1F"),
     UPDATE("Обновить лот \uD83E\uDEF6"),
     DELETE("Удалить лот \uD83D\uDDD1"),
-    TABLE("Таблица торгов \uD83E\uDDEE");
+    TABLE("Таблица торгов \uD83E\uDDEE"),
+    DOWNLOAD_TABLE("Скачать таблицу"),
+    CLEAR_BIDDING("Очистить таблицу торгов"),
+    YES_CLEAR("Да"),
+    NO("Нет");
 
     public final String label;
 
