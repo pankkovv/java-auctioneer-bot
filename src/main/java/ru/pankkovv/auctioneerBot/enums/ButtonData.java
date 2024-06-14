@@ -12,7 +12,7 @@ public enum ButtonData {
     UPDATE_BTN("update_btn"),
     DELETE_BTN("delete_btn"),
     TABLE_BTN("table_btn"),
-    DOWNLOAD_TABLE_BTN("download_btn"),
+    DOWNLOAD_BTN("download_btn"),
     CLEAR_BIDDING_BTN("clear_bidding_btn"),
     YES_CLEAR_BTN("yes_clear_btn"),
     NO_BTN("no_btn");

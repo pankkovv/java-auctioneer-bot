@@ -1,8 +1,7 @@
 package ru.pankkovv.auctioneerBot.service;
 
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageCaption;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import ru.pankkovv.auctioneerBot.enums.ButtonData;
@@ -12,13 +11,15 @@ import ru.pankkovv.auctioneerBot.enums.ExceptionMessage;
 import ru.pankkovv.auctioneerBot.exception.AdminNotFoundException;
 import ru.pankkovv.auctioneerBot.exception.BetException;
 import ru.pankkovv.auctioneerBot.exception.LotNotFoundException;
-import ru.pankkovv.auctioneerBot.model.Auction;
 import ru.pankkovv.auctioneerBot.model.Button;
 import ru.pankkovv.auctioneerBot.model.Lot;
 import ru.pankkovv.auctioneerBot.utils.Utils;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -27,6 +28,8 @@ import java.util.Map;
 import static ru.pankkovv.auctioneerBot.model.Auction.*;
 
 public class NonCommandService {
+    private final String FILE_AUCTION = "bidding.csv";
+
     public SendPhoto nonCommandExecute(Long chatId, String userName, String text) {
         String answer;
         SendPhoto sendPhoto = new SendPhoto();
@@ -43,7 +46,7 @@ public class NonCommandService {
                 answer = CommandMessage.START.label;
                 sendPhoto.setPhoto(new InputFile(new File("imgBtn/start.jpg")));
             } else {
-                try (FileWriter fileWriter = new FileWriter("bidding.csv", true)) {
+                try (FileWriter fileWriter = new FileWriter(FILE_AUCTION, true)) {
                     Utils.containsLot();
                     Float bet = validBet(parameters[0]);
                     DateTimeFormatter formatterWriter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -264,10 +267,26 @@ public class NonCommandService {
                 break;
 
             case "download_btn":
-                text = "download";
+                if (Files.exists(Path.of(FILE_AUCTION))) {
+                    SendDocument sendDocument = new SendDocument();
+
+                    sendDocument.setChatId(String.valueOf(chatId));
+                    sendDocument.setCaption(CommandMessage.TRY_DOWNLOAD.label);
+                    sendDocument.setDocument(new InputFile(new File(FILE_AUCTION)));
+                    sendDocument.setReplyMarkup(Button.getAllButton());
+
+                    return sendDocument;
+
+                } else {
+                    sendPhoto.setCaption(ExceptionMessage.NOT_FOUND_FILE_BIDDING_EXCEPTION.label);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/notFoundLot.jpg")));
+                    sendPhoto.setReplyMarkup(Button.getAllButton());
+                }
+
                 break;
+
             case "clear_bidding_btn":
-                text = "Вы точно хотите стереть таблицу и лот?";
+                text = CommandMessage.ISSUE_CLEAR_TABLE.label;
 
                 sendPhoto.setChatId(String.valueOf(chatId));
                 sendPhoto.setCaption(text);
@@ -276,13 +295,20 @@ public class NonCommandService {
                 return sendPhoto;
 
             case "yes_clear_btn":
-                text = "Ваши торги успешно очищены!";
-                lot = null;
-                bidding.clear();
+                try {
+                    text = CommandMessage.TRY_CLEAR_TABLE.label;
+                    lot = null;
+                    bidding.clear();
+                    Files.delete(Path.of(FILE_AUCTION));
 
-                sendPhoto.setCaption(text);
-                sendPhoto.setPhoto(new InputFile(new File("imgBtn/table.jpg")));
-                sendPhoto.setReplyMarkup(Button.getStartButton());
+                    sendPhoto.setCaption(text);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/create.jpg")));
+                    sendPhoto.setReplyMarkup(Button.getStartButton());
+                } catch (IOException e) {
+                    sendPhoto.setCaption(ExceptionMessage.NOT_FOUND_FILE_BIDDING_EXCEPTION.label);
+                    sendPhoto.setPhoto(new InputFile(new File("imgBtn/notFoundLot.jpg")));
+                }
+
                 break;
 
             case "no_btn":

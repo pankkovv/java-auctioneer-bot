@@ -73,7 +73,7 @@ public class Button {
 
         InlineKeyboardButton downloadButton = new InlineKeyboardButton();
         downloadButton.setText(ButtonMessage.DOWNLOAD_TABLE.label);
-        downloadButton.setCallbackData(ButtonData.DOWNLOAD_TABLE_BTN.label);
+        downloadButton.setCallbackData(ButtonData.DOWNLOAD_BTN.label);
 
         InlineKeyboardButton clearButton = new InlineKeyboardButton();
         clearButton.setText(ButtonMessage.CLEAR_BIDDING.label);

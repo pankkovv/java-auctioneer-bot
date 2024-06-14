@@ -39,7 +39,10 @@ public enum CommandMessage {
 
     TABLE("Таблица (ник ставка):\n"),
     TRY_CREATE_LOT("Лот успешно создан(обновлен)!"),
-    TRY_BET("%s, ваша ставка %s₽ успешно принята!");
+    TRY_BET("%s, ваша ставка %s₽ успешно принята!"),
+    TRY_DOWNLOAD("Актуальный файл таблицы торгов аукциона"),
+    ISSUE_CLEAR_TABLE("Вы точно хотите стереть таблицу и лот?"),
+    TRY_CLEAR_TABLE("Аукцион успешно очищен!");
 
     public final String label;
 
