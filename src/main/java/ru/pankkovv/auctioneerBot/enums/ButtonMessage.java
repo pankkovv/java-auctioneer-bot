@@ -12,8 +12,8 @@ public enum ButtonMessage {
     UPDATE("Обновить лот \uD83E\uDEF6"),
     DELETE("Удалить лот \uD83D\uDDD1"),
     TABLE("Таблица торгов \uD83E\uDDEE"),
-    DOWNLOAD_TABLE("Скачать таблицу торгов"),
-    CLEAR_BIDDING("Очистить таблицу торгов"),
+    DOWNLOAD_TABLE("Скачать таблицу торгов ⬇"),
+    CLEAR_BIDDING("Очистить таблицу торгов \uD83E\uDDF9"),
     YES_CLEAR("Да"),
     NO("Нет");
 
